@@ -1368,32 +1368,34 @@ add_library(love_3p_ddsparse
 # enet
 #
 
-add_library(love_3p_enet
-	src/libraries/enet/enet.cpp
-	src/libraries/enet/lua-enet.h
-	src/libraries/enet/libenet/callbacks.c
-	src/libraries/enet/libenet/compress.c
-	src/libraries/enet/libenet/host.c
-	src/libraries/enet/libenet/list.c
-	src/libraries/enet/libenet/packet.c
-	src/libraries/enet/libenet/peer.c
-	src/libraries/enet/libenet/protocol.c
-	src/libraries/enet/libenet/unix.c
-	src/libraries/enet/libenet/win32.c
-	src/libraries/enet/libenet/include/enet/enet.h
-	src/libraries/enet/libenet/include/enet/list.h
-	src/libraries/enet/libenet/include/enet/protocol.h
-	src/libraries/enet/libenet/include/enet/time.h
-	src/libraries/enet/libenet/include/enet/types.h
-	src/libraries/enet/libenet/include/enet/unix.h
-	src/libraries/enet/libenet/include/enet/utility.h
-	src/libraries/enet/libenet/include/enet/win32.h
-)
-love_disable_warnings(love_3p_enet)
-target_link_libraries(love_3p_enet lovedep::Lua)
-target_include_directories(love_3p_enet PUBLIC src/libraries/enet/libenet/include)
-if(MINGW)
-	target_link_libraries(love_3p_enet winmm.a)
+if(!PSP)
+	add_library(love_3p_enet
+		src/libraries/enet/enet.cpp
+		src/libraries/enet/lua-enet.h
+		src/libraries/enet/libenet/callbacks.c
+		src/libraries/enet/libenet/compress.c
+		src/libraries/enet/libenet/host.c
+		src/libraries/enet/libenet/list.c
+		src/libraries/enet/libenet/packet.c
+		src/libraries/enet/libenet/peer.c
+		src/libraries/enet/libenet/protocol.c
+		src/libraries/enet/libenet/unix.c
+		src/libraries/enet/libenet/win32.c
+		src/libraries/enet/libenet/include/enet/enet.h
+		src/libraries/enet/libenet/include/enet/list.h
+		src/libraries/enet/libenet/include/enet/protocol.h
+		src/libraries/enet/libenet/include/enet/time.h
+		src/libraries/enet/libenet/include/enet/types.h
+		src/libraries/enet/libenet/include/enet/unix.h
+		src/libraries/enet/libenet/include/enet/utility.h
+		src/libraries/enet/libenet/include/enet/win32.h
+	)
+	love_disable_warnings(love_3p_enet)
+	target_link_libraries(love_3p_enet lovedep::Lua)
+	target_include_directories(love_3p_enet PUBLIC src/libraries/enet/libenet/include)
+	if(MINGW)
+		target_link_libraries(love_3p_enet winmm.a)
+	endif()
 endif()
 
 #
@@ -1410,113 +1412,115 @@ add_library(love_3p_glad
 # glslang
 #
 
-add_library(love_3p_glslang
-	src/libraries/glslang/glslang/build_info.h
-	src/libraries/glslang/glslang/GenericCodeGen/CodeGen.cpp
-	src/libraries/glslang/glslang/GenericCodeGen/Link.cpp
-	src/libraries/glslang/glslang/Include/arrays.h
-	src/libraries/glslang/glslang/Include/BaseTypes.h
-	src/libraries/glslang/glslang/Include/Common.h
-	src/libraries/glslang/glslang/Include/ConstantUnion.h
-	src/libraries/glslang/glslang/Include/InfoSink.h
-	src/libraries/glslang/glslang/Include/InitializeGlobals.h
-	src/libraries/glslang/glslang/Include/intermediate.h
-	src/libraries/glslang/glslang/Include/PoolAlloc.h
-	src/libraries/glslang/glslang/Include/ResourceLimits.h
-	src/libraries/glslang/glslang/Include/ShHandle.h
-	src/libraries/glslang/glslang/Include/SpirvIntrinsics.h
-	src/libraries/glslang/glslang/Include/Types.h
-	src/libraries/glslang/glslang/MachineIndependent/preprocessor/Pp.cpp
-	src/libraries/glslang/glslang/MachineIndependent/preprocessor/PpAtom.cpp
-	src/libraries/glslang/glslang/MachineIndependent/preprocessor/PpContext.cpp
-	src/libraries/glslang/glslang/MachineIndependent/preprocessor/PpContext.h
-	src/libraries/glslang/glslang/MachineIndependent/preprocessor/PpScanner.cpp
-	src/libraries/glslang/glslang/MachineIndependent/preprocessor/PpTokens.cpp
-	src/libraries/glslang/glslang/MachineIndependent/preprocessor/PpTokens.h
-	src/libraries/glslang/glslang/MachineIndependent/attribute.cpp
-	src/libraries/glslang/glslang/MachineIndependent/attribute.h
-	src/libraries/glslang/glslang/MachineIndependent/Constant.cpp
-	src/libraries/glslang/glslang/MachineIndependent/gl_types.h
-	src/libraries/glslang/glslang/MachineIndependent/glslang_tab.cpp
-	src/libraries/glslang/glslang/MachineIndependent/glslang_tab.cpp.h
-	src/libraries/glslang/glslang/MachineIndependent/InfoSink.cpp
-	src/libraries/glslang/glslang/MachineIndependent/Initialize.cpp
-	src/libraries/glslang/glslang/MachineIndependent/Initialize.h
-	src/libraries/glslang/glslang/MachineIndependent/Intermediate.cpp
-	src/libraries/glslang/glslang/MachineIndependent/intermOut.cpp
-	src/libraries/glslang/glslang/MachineIndependent/IntermTraverse.cpp
-	src/libraries/glslang/glslang/MachineIndependent/iomapper.cpp
-	src/libraries/glslang/glslang/MachineIndependent/iomapper.h
-	src/libraries/glslang/glslang/MachineIndependent/limits.cpp
-	src/libraries/glslang/glslang/MachineIndependent/linkValidate.cpp
-	src/libraries/glslang/glslang/MachineIndependent/LiveTraverser.h
-	src/libraries/glslang/glslang/MachineIndependent/localintermediate.h
-	src/libraries/glslang/glslang/MachineIndependent/parseConst.cpp
-	src/libraries/glslang/glslang/MachineIndependent/ParseContextBase.cpp
-	src/libraries/glslang/glslang/MachineIndependent/ParseHelper.cpp
-	src/libraries/glslang/glslang/MachineIndependent/ParseHelper.h
-	src/libraries/glslang/glslang/MachineIndependent/parseVersions.h
-	src/libraries/glslang/glslang/MachineIndependent/pch.h
-	src/libraries/glslang/glslang/MachineIndependent/PoolAlloc.cpp
-	src/libraries/glslang/glslang/MachineIndependent/propagateNoContraction.cpp
-	src/libraries/glslang/glslang/MachineIndependent/propagateNoContraction.h
-	src/libraries/glslang/glslang/MachineIndependent/reflection.cpp
-	src/libraries/glslang/glslang/MachineIndependent/reflection.h
-	src/libraries/glslang/glslang/MachineIndependent/RemoveTree.cpp
-	src/libraries/glslang/glslang/MachineIndependent/RemoveTree.h
-	src/libraries/glslang/glslang/MachineIndependent/Scan.cpp
-	src/libraries/glslang/glslang/MachineIndependent/Scan.h
-	src/libraries/glslang/glslang/MachineIndependent/ScanContext.h
-	src/libraries/glslang/glslang/MachineIndependent/ShaderLang.cpp
-	src/libraries/glslang/glslang/MachineIndependent/span.h
-	src/libraries/glslang/glslang/MachineIndependent/SpirvIntrinsics.cpp
-	src/libraries/glslang/glslang/MachineIndependent/SymbolTable.cpp
-	src/libraries/glslang/glslang/MachineIndependent/SymbolTable.h
-	src/libraries/glslang/glslang/MachineIndependent/Versions.cpp
-	src/libraries/glslang/glslang/MachineIndependent/Versions.h
-	src/libraries/glslang/glslang/OSDependent/osinclude.h
-	src/libraries/glslang/glslang/Public/ResourceLimits.h
-	src/libraries/glslang/glslang/Public/ShaderLang.h
-	src/libraries/glslang/glslang/ResourceLimits/ResourceLimits.cpp
-	src/libraries/glslang/SPIRV/bitutils.h
-	src/libraries/glslang/SPIRV/disassemble.cpp
-	src/libraries/glslang/SPIRV/disassemble.h
-	src/libraries/glslang/SPIRV/doc.cpp
-	src/libraries/glslang/SPIRV/doc.h
-	src/libraries/glslang/SPIRV/GLSL.ext.AMD.h
-	src/libraries/glslang/SPIRV/GLSL.ext.ARM.h
-	src/libraries/glslang/SPIRV/GLSL.ext.EXT.h
-	src/libraries/glslang/SPIRV/GLSL.ext.KHR.h
-	src/libraries/glslang/SPIRV/GLSL.ext.NV.h
-	src/libraries/glslang/SPIRV/GLSL.ext.QCOM.h
-	src/libraries/glslang/SPIRV/GLSL.std.450.h
-	src/libraries/glslang/SPIRV/GlslangToSpv.cpp
-	src/libraries/glslang/SPIRV/GlslangToSpv.h
-	src/libraries/glslang/SPIRV/hex_float.h
-	src/libraries/glslang/SPIRV/InReadableOrder.cpp
-	src/libraries/glslang/SPIRV/Logger.cpp
-	src/libraries/glslang/SPIRV/Logger.h
-	src/libraries/glslang/SPIRV/NonSemanticDebugPrintf.h
-	src/libraries/glslang/SPIRV/NonSemanticShaderDebugInfo100.h
-	src/libraries/glslang/SPIRV/spirv.hpp
-	src/libraries/glslang/SPIRV/SpvBuilder.cpp
-	src/libraries/glslang/SPIRV/SpvBuilder.h
-	src/libraries/glslang/SPIRV/spvIR.h
-	src/libraries/glslang/SPIRV/SpvPostProcess.cpp
-	src/libraries/glslang/SPIRV/SPVRemapper.cpp
-	src/libraries/glslang/SPIRV/SPVRemapper.h
-	src/libraries/glslang/SPIRV/SpvTools.cpp
-	src/libraries/glslang/SPIRV/SpvTools.h
-)
+if(!PSP)
+	add_library(love_3p_glslang
+		src/libraries/glslang/glslang/build_info.h
+		src/libraries/glslang/glslang/GenericCodeGen/CodeGen.cpp
+		src/libraries/glslang/glslang/GenericCodeGen/Link.cpp
+		src/libraries/glslang/glslang/Include/arrays.h
+		src/libraries/glslang/glslang/Include/BaseTypes.h
+		src/libraries/glslang/glslang/Include/Common.h
+		src/libraries/glslang/glslang/Include/ConstantUnion.h
+		src/libraries/glslang/glslang/Include/InfoSink.h
+		src/libraries/glslang/glslang/Include/InitializeGlobals.h
+		src/libraries/glslang/glslang/Include/intermediate.h
+		src/libraries/glslang/glslang/Include/PoolAlloc.h
+		src/libraries/glslang/glslang/Include/ResourceLimits.h
+		src/libraries/glslang/glslang/Include/ShHandle.h
+		src/libraries/glslang/glslang/Include/SpirvIntrinsics.h
+		src/libraries/glslang/glslang/Include/Types.h
+		src/libraries/glslang/glslang/MachineIndependent/preprocessor/Pp.cpp
+		src/libraries/glslang/glslang/MachineIndependent/preprocessor/PpAtom.cpp
+		src/libraries/glslang/glslang/MachineIndependent/preprocessor/PpContext.cpp
+		src/libraries/glslang/glslang/MachineIndependent/preprocessor/PpContext.h
+		src/libraries/glslang/glslang/MachineIndependent/preprocessor/PpScanner.cpp
+		src/libraries/glslang/glslang/MachineIndependent/preprocessor/PpTokens.cpp
+		src/libraries/glslang/glslang/MachineIndependent/preprocessor/PpTokens.h
+		src/libraries/glslang/glslang/MachineIndependent/attribute.cpp
+		src/libraries/glslang/glslang/MachineIndependent/attribute.h
+		src/libraries/glslang/glslang/MachineIndependent/Constant.cpp
+		src/libraries/glslang/glslang/MachineIndependent/gl_types.h
+		src/libraries/glslang/glslang/MachineIndependent/glslang_tab.cpp
+		src/libraries/glslang/glslang/MachineIndependent/glslang_tab.cpp.h
+		src/libraries/glslang/glslang/MachineIndependent/InfoSink.cpp
+		src/libraries/glslang/glslang/MachineIndependent/Initialize.cpp
+		src/libraries/glslang/glslang/MachineIndependent/Initialize.h
+		src/libraries/glslang/glslang/MachineIndependent/Intermediate.cpp
+		src/libraries/glslang/glslang/MachineIndependent/intermOut.cpp
+		src/libraries/glslang/glslang/MachineIndependent/IntermTraverse.cpp
+		src/libraries/glslang/glslang/MachineIndependent/iomapper.cpp
+		src/libraries/glslang/glslang/MachineIndependent/iomapper.h
+		src/libraries/glslang/glslang/MachineIndependent/limits.cpp
+		src/libraries/glslang/glslang/MachineIndependent/linkValidate.cpp
+		src/libraries/glslang/glslang/MachineIndependent/LiveTraverser.h
+		src/libraries/glslang/glslang/MachineIndependent/localintermediate.h
+		src/libraries/glslang/glslang/MachineIndependent/parseConst.cpp
+		src/libraries/glslang/glslang/MachineIndependent/ParseContextBase.cpp
+		src/libraries/glslang/glslang/MachineIndependent/ParseHelper.cpp
+		src/libraries/glslang/glslang/MachineIndependent/ParseHelper.h
+		src/libraries/glslang/glslang/MachineIndependent/parseVersions.h
+		src/libraries/glslang/glslang/MachineIndependent/pch.h
+		src/libraries/glslang/glslang/MachineIndependent/PoolAlloc.cpp
+		src/libraries/glslang/glslang/MachineIndependent/propagateNoContraction.cpp
+		src/libraries/glslang/glslang/MachineIndependent/propagateNoContraction.h
+		src/libraries/glslang/glslang/MachineIndependent/reflection.cpp
+		src/libraries/glslang/glslang/MachineIndependent/reflection.h
+		src/libraries/glslang/glslang/MachineIndependent/RemoveTree.cpp
+		src/libraries/glslang/glslang/MachineIndependent/RemoveTree.h
+		src/libraries/glslang/glslang/MachineIndependent/Scan.cpp
+		src/libraries/glslang/glslang/MachineIndependent/Scan.h
+		src/libraries/glslang/glslang/MachineIndependent/ScanContext.h
+		src/libraries/glslang/glslang/MachineIndependent/ShaderLang.cpp
+		src/libraries/glslang/glslang/MachineIndependent/span.h
+		src/libraries/glslang/glslang/MachineIndependent/SpirvIntrinsics.cpp
+		src/libraries/glslang/glslang/MachineIndependent/SymbolTable.cpp
+		src/libraries/glslang/glslang/MachineIndependent/SymbolTable.h
+		src/libraries/glslang/glslang/MachineIndependent/Versions.cpp
+		src/libraries/glslang/glslang/MachineIndependent/Versions.h
+		src/libraries/glslang/glslang/OSDependent/osinclude.h
+		src/libraries/glslang/glslang/Public/ResourceLimits.h
+		src/libraries/glslang/glslang/Public/ShaderLang.h
+		src/libraries/glslang/glslang/ResourceLimits/ResourceLimits.cpp
+		src/libraries/glslang/SPIRV/bitutils.h
+		src/libraries/glslang/SPIRV/disassemble.cpp
+		src/libraries/glslang/SPIRV/disassemble.h
+		src/libraries/glslang/SPIRV/doc.cpp
+		src/libraries/glslang/SPIRV/doc.h
+		src/libraries/glslang/SPIRV/GLSL.ext.AMD.h
+		src/libraries/glslang/SPIRV/GLSL.ext.ARM.h
+		src/libraries/glslang/SPIRV/GLSL.ext.EXT.h
+		src/libraries/glslang/SPIRV/GLSL.ext.KHR.h
+		src/libraries/glslang/SPIRV/GLSL.ext.NV.h
+		src/libraries/glslang/SPIRV/GLSL.ext.QCOM.h
+		src/libraries/glslang/SPIRV/GLSL.std.450.h
+		src/libraries/glslang/SPIRV/GlslangToSpv.cpp
+		src/libraries/glslang/SPIRV/GlslangToSpv.h
+		src/libraries/glslang/SPIRV/hex_float.h
+		src/libraries/glslang/SPIRV/InReadableOrder.cpp
+		src/libraries/glslang/SPIRV/Logger.cpp
+		src/libraries/glslang/SPIRV/Logger.h
+		src/libraries/glslang/SPIRV/NonSemanticDebugPrintf.h
+		src/libraries/glslang/SPIRV/NonSemanticShaderDebugInfo100.h
+		src/libraries/glslang/SPIRV/spirv.hpp
+		src/libraries/glslang/SPIRV/SpvBuilder.cpp
+		src/libraries/glslang/SPIRV/SpvBuilder.h
+		src/libraries/glslang/SPIRV/spvIR.h
+		src/libraries/glslang/SPIRV/SpvPostProcess.cpp
+		src/libraries/glslang/SPIRV/SPVRemapper.cpp
+		src/libraries/glslang/SPIRV/SPVRemapper.h
+		src/libraries/glslang/SPIRV/SpvTools.cpp
+		src/libraries/glslang/SPIRV/SpvTools.h
+	)
 
-if(MSVC OR MINGW)
-	target_sources(love_3p_glslang PRIVATE
-		src/libraries/glslang/glslang/OSDependent/Windows/ossource.cpp
-	)
-else()
-	target_sources(love_3p_glslang PRIVATE
-		src/libraries/glslang/glslang/OSDependent/Unix/ossource.cpp
-	)
+	if(MSVC OR MINGW)
+		target_sources(love_3p_glslang PRIVATE
+			src/libraries/glslang/glslang/OSDependent/Windows/ossource.cpp
+		)
+	else()
+		target_sources(love_3p_glslang PRIVATE
+			src/libraries/glslang/glslang/OSDependent/Unix/ossource.cpp
+		)
+	endif()
 endif()
 
 #
@@ -1532,78 +1536,80 @@ add_library(love_3p_lodepng
 # luasocket
 #
 
-if(MINGW)
-	set(WIN32_LIB_EXT .a)
-else()
-	set(WIN32_LIB_EXT .lib)
-endif()
+if(!PSP)
+	if(MINGW)
+		set(WIN32_LIB_EXT .a)
+	else()
+		set(WIN32_LIB_EXT .lib)
+	endif()
 
-add_library(love_3p_luasocket
-	src/libraries/luasocket/luasocket.cpp
-	src/libraries/luasocket/luasocket.h
-	src/libraries/luasocket/libluasocket/auxiliar.c
-	src/libraries/luasocket/libluasocket/auxiliar.h
-	src/libraries/luasocket/libluasocket/buffer.c
-	src/libraries/luasocket/libluasocket/buffer.h
-	src/libraries/luasocket/libluasocket/compat.c
-	src/libraries/luasocket/libluasocket/compat.h
-	src/libraries/luasocket/libluasocket/except.c
-	src/libraries/luasocket/libluasocket/except.h
-	src/libraries/luasocket/libluasocket/ftp.lua.h
-	src/libraries/luasocket/libluasocket/headers.lua.h
-	src/libraries/luasocket/libluasocket/http.lua.h
-	src/libraries/luasocket/libluasocket/inet.c
-	src/libraries/luasocket/libluasocket/inet.h
-	src/libraries/luasocket/libluasocket/io.c
-	src/libraries/luasocket/libluasocket/io.h
-	src/libraries/luasocket/libluasocket/ltn12.lua.h
-	src/libraries/luasocket/libluasocket/luasocket.c
-	src/libraries/luasocket/libluasocket/luasocket.h
-	src/libraries/luasocket/libluasocket/mbox.lua.h
-	src/libraries/luasocket/libluasocket/mime.c
-	src/libraries/luasocket/libluasocket/mime.h
-	src/libraries/luasocket/libluasocket/mime.lua.h
-	src/libraries/luasocket/libluasocket/options.c
-	src/libraries/luasocket/libluasocket/options.h
-	src/libraries/luasocket/libluasocket/pierror.h
-	src/libraries/luasocket/libluasocket/select.c
-	src/libraries/luasocket/libluasocket/select.h
-	src/libraries/luasocket/libluasocket/smtp.lua.h
-	src/libraries/luasocket/libluasocket/socket.h
-	src/libraries/luasocket/libluasocket/socket.lua.h
-	src/libraries/luasocket/libluasocket/tcp.c
-	src/libraries/luasocket/libluasocket/tcp.h
-	src/libraries/luasocket/libluasocket/timeout.c
-	src/libraries/luasocket/libluasocket/timeout.h
-	src/libraries/luasocket/libluasocket/tp.lua.h
-	src/libraries/luasocket/libluasocket/udp.c
-	src/libraries/luasocket/libluasocket/udp.h
-	src/libraries/luasocket/libluasocket/url.lua.h
-	src/libraries/luasocket/libluasocket/unix.c
-	src/libraries/luasocket/libluasocket/unix.h
-	src/libraries/luasocket/libluasocket/unixdgram.c
-	src/libraries/luasocket/libluasocket/unixdgram.h
-	src/libraries/luasocket/libluasocket/unixstream.c
-	src/libraries/luasocket/libluasocket/unixstream.h
-)
-target_link_libraries(love_3p_luasocket lovedep::Lua)
-love_disable_warnings(love_3p_luasocket)
+	add_library(love_3p_luasocket
+		src/libraries/luasocket/luasocket.cpp
+		src/libraries/luasocket/luasocket.h
+		src/libraries/luasocket/libluasocket/auxiliar.c
+		src/libraries/luasocket/libluasocket/auxiliar.h
+		src/libraries/luasocket/libluasocket/buffer.c
+		src/libraries/luasocket/libluasocket/buffer.h
+		src/libraries/luasocket/libluasocket/compat.c
+		src/libraries/luasocket/libluasocket/compat.h
+		src/libraries/luasocket/libluasocket/except.c
+		src/libraries/luasocket/libluasocket/except.h
+		src/libraries/luasocket/libluasocket/ftp.lua.h
+		src/libraries/luasocket/libluasocket/headers.lua.h
+		src/libraries/luasocket/libluasocket/http.lua.h
+		src/libraries/luasocket/libluasocket/inet.c
+		src/libraries/luasocket/libluasocket/inet.h
+		src/libraries/luasocket/libluasocket/io.c
+		src/libraries/luasocket/libluasocket/io.h
+		src/libraries/luasocket/libluasocket/ltn12.lua.h
+		src/libraries/luasocket/libluasocket/luasocket.c
+		src/libraries/luasocket/libluasocket/luasocket.h
+		src/libraries/luasocket/libluasocket/mbox.lua.h
+		src/libraries/luasocket/libluasocket/mime.c
+		src/libraries/luasocket/libluasocket/mime.h
+		src/libraries/luasocket/libluasocket/mime.lua.h
+		src/libraries/luasocket/libluasocket/options.c
+		src/libraries/luasocket/libluasocket/options.h
+		src/libraries/luasocket/libluasocket/pierror.h
+		src/libraries/luasocket/libluasocket/select.c
+		src/libraries/luasocket/libluasocket/select.h
+		src/libraries/luasocket/libluasocket/smtp.lua.h
+		src/libraries/luasocket/libluasocket/socket.h
+		src/libraries/luasocket/libluasocket/socket.lua.h
+		src/libraries/luasocket/libluasocket/tcp.c
+		src/libraries/luasocket/libluasocket/tcp.h
+		src/libraries/luasocket/libluasocket/timeout.c
+		src/libraries/luasocket/libluasocket/timeout.h
+		src/libraries/luasocket/libluasocket/tp.lua.h
+		src/libraries/luasocket/libluasocket/udp.c
+		src/libraries/luasocket/libluasocket/udp.h
+		src/libraries/luasocket/libluasocket/url.lua.h
+		src/libraries/luasocket/libluasocket/unix.c
+		src/libraries/luasocket/libluasocket/unix.h
+		src/libraries/luasocket/libluasocket/unixdgram.c
+		src/libraries/luasocket/libluasocket/unixdgram.h
+		src/libraries/luasocket/libluasocket/unixstream.c
+		src/libraries/luasocket/libluasocket/unixstream.h
+	)
+	target_link_libraries(love_3p_luasocket lovedep::Lua)
+	love_disable_warnings(love_3p_luasocket)
 
-if(MSVC OR MINGW)
-	target_sources(love_3p_luasocket PRIVATE
-		src/libraries/luasocket/libluasocket/wsocket.c
-		src/libraries/luasocket/libluasocket/wsocket.h
-	)
+	if(MSVC OR MINGW)
+		target_sources(love_3p_luasocket PRIVATE
+			src/libraries/luasocket/libluasocket/wsocket.c
+			src/libraries/luasocket/libluasocket/wsocket.h
+		)
 
-	target_link_libraries(love_3p_luasocket
-		ws2_32${WIN32_LIB_EXT}
-	)
-else()
-	target_sources(love_3p_luasocket PRIVATE
-		src/libraries/luasocket/libluasocket/serial.c
-		src/libraries/luasocket/libluasocket/usocket.c
-		src/libraries/luasocket/libluasocket/usocket.h
-	)
+		target_link_libraries(love_3p_luasocket
+			ws2_32${WIN32_LIB_EXT}
+		)
+	else()
+		target_sources(love_3p_luasocket PRIVATE
+			src/libraries/luasocket/libluasocket/serial.c
+			src/libraries/luasocket/libluasocket/usocket.c
+			src/libraries/luasocket/libluasocket/usocket.h
+		)
+	endif()
 endif()
 
 #
@@ -1623,55 +1629,56 @@ target_link_libraries(love_3p_lua53 lovedep::Lua)
 # Lua HTTPS
 #
 
-add_library(love_3p_luahttps
-	# These are platform-dependent but have ifdef guards to make sure they only
-	# compile on supported platforms.
-	src/libraries/luahttps/src/android/AndroidClient.cpp
-	src/libraries/luahttps/src/android/AndroidClient.h
-	src/libraries/luahttps/src/common/config.h
-	src/libraries/luahttps/src/common/Connection.h
-	src/libraries/luahttps/src/common/ConnectionClient.h
-	src/libraries/luahttps/src/common/HTTPRequest.cpp
-	src/libraries/luahttps/src/common/HTTPRequest.h
-	src/libraries/luahttps/src/common/HTTPS.cpp
-	src/libraries/luahttps/src/common/HTTPS.h
-	src/libraries/luahttps/src/common/HTTPSClient.cpp
-	src/libraries/luahttps/src/common/HTTPSClient.h
-	src/libraries/luahttps/src/common/PlaintextConnection.cpp
-	src/libraries/luahttps/src/common/PlaintextConnection.h
-	src/libraries/luahttps/src/generic/CurlClient.cpp
-	src/libraries/luahttps/src/generic/CurlClient.h
-	src/libraries/luahttps/src/generic/OpenSSLConnection.cpp
-	src/libraries/luahttps/src/generic/OpenSSLConnection.h
-	src/libraries/luahttps/src/lua/main.cpp
-	src/libraries/luahttps/src/windows/SChannelConnection.cpp
-	src/libraries/luahttps/src/windows/SChannelConnection.h
-	src/libraries/luahttps/src/windows/WinINetClient.cpp
-	src/libraries/luahttps/src/windows/WinINetClient.h
-)
-target_link_libraries(love_3p_luahttps lovedep::Lua)
-
-if (APPLE)
-	target_sources(love_3p_luahttps PRIVATE
-		src/libraries/luahttps/src/apple/NSURLClient.mm
-		src/libraries/luahttps/src/apple/NSURLClient.h
+if(!PSP)
+	add_library(love_3p_luahttps
+		# These are platform-dependent but have ifdef guards to make sure they only
+		# compile on supported platforms.
+		src/libraries/luahttps/src/android/AndroidClient.cpp
+		src/libraries/luahttps/src/android/AndroidClient.h
+		src/libraries/luahttps/src/common/config.h
+		src/libraries/luahttps/src/common/Connection.h
+		src/libraries/luahttps/src/common/ConnectionClient.h
+		src/libraries/luahttps/src/common/HTTPRequest.cpp
+		src/libraries/luahttps/src/common/HTTPRequest.h
+		src/libraries/luahttps/src/common/HTTPS.cpp
+		src/libraries/luahttps/src/common/HTTPS.h
+		src/libraries/luahttps/src/common/HTTPSClient.cpp
+		src/libraries/luahttps/src/common/HTTPSClient.h
+		src/libraries/luahttps/src/common/PlaintextConnection.cpp
+		src/libraries/luahttps/src/common/PlaintextConnection.h
+		src/libraries/luahttps/src/generic/CurlClient.cpp
+		src/libraries/luahttps/src/generic/CurlClient.h
+		src/libraries/luahttps/src/generic/OpenSSLConnection.cpp
+		src/libraries/luahttps/src/generic/OpenSSLConnection.h
+		src/libraries/luahttps/src/lua/main.cpp
+		src/libraries/luahttps/src/windows/SChannelConnection.cpp
+		src/libraries/luahttps/src/windows/SChannelConnection.h
+		src/libraries/luahttps/src/windows/WinINetClient.cpp
+		src/libraries/luahttps/src/windows/WinINetClient.h
 	)
-	target_compile_options(love_3p_luahttps PRIVATE -fobjc-arc)
-endif()
+	target_link_libraries(love_3p_luahttps lovedep::Lua)
 
-if(MSVC)
-	target_link_libraries(love_3p_luahttps
-		ws2_32
-		secur32
-	)
-
-	if(NOT CMAKE_SYSTEM_NAME STREQUAL "WindowsStore")
-		target_link_libraries(love_3p_luahttps
-			wininet
+	if (APPLE)
+		target_sources(love_3p_luahttps PRIVATE
+			src/libraries/luahttps/src/apple/NSURLClient.mm
+			src/libraries/luahttps/src/apple/NSURLClient.h
 		)
+		target_compile_options(love_3p_luahttps PRIVATE -fobjc-arc)
+	endif()
+
+	if(MSVC)
+		target_link_libraries(love_3p_luahttps
+			ws2_32
+			secur32
+		)
+
+		if(NOT CMAKE_SYSTEM_NAME STREQUAL "WindowsStore")
+			target_link_libraries(love_3p_luahttps
+				wininet
+			)
+		endif()
 	endif()
 endif()
-
 #
 # lz4
 #
@@ -1745,33 +1752,35 @@ endif()
 # spirv_cross
 #
 
-add_library(love_3p_spirv_cross
-	src/libraries/spirv_cross/GLSL.std.450.h
-	src/libraries/spirv_cross/spirv_cfg.cpp
-	src/libraries/spirv_cross/spirv_cfg.hpp
-	src/libraries/spirv_cross/spirv_common.hpp
-	src/libraries/spirv_cross/spirv_cpp.cpp
-	src/libraries/spirv_cross/spirv_cpp.hpp
-	src/libraries/spirv_cross/spirv_cross_containers.hpp
-	src/libraries/spirv_cross/spirv_cross_error_handling.hpp
-	src/libraries/spirv_cross/spirv_cross_parsed_ir.cpp
-	src/libraries/spirv_cross/spirv_cross_parsed_ir.hpp
-	src/libraries/spirv_cross/spirv_cross_util.cpp
-	src/libraries/spirv_cross/spirv_cross_util.hpp
-	src/libraries/spirv_cross/spirv_cross.cpp
-	src/libraries/spirv_cross/spirv_cross.hpp
-	src/libraries/spirv_cross/spirv_glsl.cpp
-	src/libraries/spirv_cross/spirv_glsl.hpp
-	src/libraries/spirv_cross/spirv_hlsl.cpp
-	src/libraries/spirv_cross/spirv_hlsl.hpp
-	src/libraries/spirv_cross/spirv_msl.cpp
-	src/libraries/spirv_cross/spirv_msl.hpp
-	src/libraries/spirv_cross/spirv_parser.cpp
-	src/libraries/spirv_cross/spirv_parser.hpp
-	src/libraries/spirv_cross/spirv_reflect.cpp
-	src/libraries/spirv_cross/spirv_reflect.hpp
-	src/libraries/spirv_cross/spirv.hpp
-)
+if(!PSP)
+	add_library(love_3p_spirv_cross
+		src/libraries/spirv_cross/GLSL.std.450.h
+		src/libraries/spirv_cross/spirv_cfg.cpp
+		src/libraries/spirv_cross/spirv_cfg.hpp
+		src/libraries/spirv_cross/spirv_common.hpp
+		src/libraries/spirv_cross/spirv_cpp.cpp
+		src/libraries/spirv_cross/spirv_cpp.hpp
+		src/libraries/spirv_cross/spirv_cross_containers.hpp
+		src/libraries/spirv_cross/spirv_cross_error_handling.hpp
+		src/libraries/spirv_cross/spirv_cross_parsed_ir.cpp
+		src/libraries/spirv_cross/spirv_cross_parsed_ir.hpp
+		src/libraries/spirv_cross/spirv_cross_util.cpp
+		src/libraries/spirv_cross/spirv_cross_util.hpp
+		src/libraries/spirv_cross/spirv_cross.cpp
+		src/libraries/spirv_cross/spirv_cross.hpp
+		src/libraries/spirv_cross/spirv_glsl.cpp
+		src/libraries/spirv_cross/spirv_glsl.hpp
+		src/libraries/spirv_cross/spirv_hlsl.cpp
+		src/libraries/spirv_cross/spirv_hlsl.hpp
+		src/libraries/spirv_cross/spirv_msl.cpp
+		src/libraries/spirv_cross/spirv_msl.hpp
+		src/libraries/spirv_cross/spirv_parser.cpp
+		src/libraries/spirv_cross/spirv_parser.hpp
+		src/libraries/spirv_cross/spirv_reflect.cpp
+		src/libraries/spirv_cross/spirv_reflect.hpp
+		src/libraries/spirv_cross/spirv.hpp
+	)
+endif()
 
 #
 # stb_image
@@ -1943,23 +1952,39 @@ set(LIBLOVE_DEPENDENCIES
 	love_video
 	love_window
 )
-set(LIBLOVE_LIBRARIES
-	love_3p_box2d
-	love_3p_ddsparse
-	love_3p_enet
-	love_3p_glad
-	love_3p_glslang
-	love_3p_lodepng
-	love_3p_luasocket
-	love_3p_lua53
-	love_3p_luahttps
-	love_3p_lz4
-	love_3p_noise1234
-	love_3p_physfs
-	love_3p_spirv_cross
-	love_3p_wuff
-	love_3p_xxhash
-)
+if(PSP)
+	set(LIBLOVE_LIBRARIES
+		love_3p_box2d
+		love_3p_ddsparse
+		love_3p_glad
+		love_3p_lodepng
+		love_3p_lua53
+		love_3p_lz4
+		love_3p_noise1234
+		love_3p_physfs
+		love_3p_wuff
+		love_3p_xxhash
+	)
+else()
+	set(LIBLOVE_LIBRARIES
+		love_3p_box2d
+		love_3p_ddsparse
+		love_3p_enet
+		love_3p_glad
+		love_3p_glslang
+		love_3p_lodepng
+		love_3p_luasocket
+		love_3p_lua53
+		love_3p_luahttps
+		love_3p_lz4
+		love_3p_noise1234
+		love_3p_physfs
+		love_3p_spirv_cross
+		love_3p_wuff
+		love_3p_xxhash
+	)
+endif()
+
 target_link_libraries(liblove ${LIBLOVE_DEPENDENCIES} ${LIBLOVE_LIBRARIES})
 
 if(LOVE_EXTRA_DEPENDECIES)
