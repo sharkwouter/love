@@ -28,7 +28,9 @@ cmake_minimum_required(VERSION 3.16)
 project(love)
 
 set(CMAKE_MODULE_PATH "${love_SOURCE_DIR}/extra/cmake" ${CMAKE_MODULE_PATH})
+if(!PSP)
 set(CMAKE_POSITION_INDEPENDENT_CODE TRUE) # Needed for shared libs on Linux. (-fPIC).
+endif()
 set(CMAKE_CXX_STANDARD 17)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)	# Allow grouping projects in Visual Studio
 
@@ -691,7 +693,7 @@ if(APPLE)
 	target_link_libraries(love_graphics INTERFACE
 		love_graphics_metal
 	)
-else()
+elseif(!PSP)
 	add_library(love_graphics_vulkan STATIC
 		src/modules/graphics/vulkan/Graphics.h
 		src/modules/graphics/vulkan/Graphics.cpp

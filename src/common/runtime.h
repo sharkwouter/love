@@ -202,24 +202,24 @@ inline float luax_checkfloat(lua_State *L, int idx)
 	return static_cast<float>(luaL_checknumber(L, idx));
 }
 
-inline lua_Number luax_checknumberclamped(lua_State *L, int idx, double minv, double maxv)
+inline lua_Number luax_checknumberclamped(lua_State *L, int idx, float minv, float maxv)
 {
 	return std::min(std::max(luaL_checknumber(L, idx), minv), maxv);
 }
 
-inline lua_Number luax_optnumberclamped(lua_State *L, int idx, double minv, double maxv, double def)
+inline lua_Number luax_optnumberclamped(lua_State *L, int idx, float minv, float maxv, float def)
 {
 	return std::min(std::max(luaL_optnumber(L, idx, def), minv), maxv);
 }
 
 inline lua_Number luax_checknumberclamped01(lua_State *L, int idx)
 {
-	return std::min(std::max(luaL_checknumber(L, idx), 0.0), 1.0);
+	return std::min(std::max(luaL_checknumber(L, idx), 0.f), 1.f);
 }
 
-inline lua_Number luax_optnumberclamped01(lua_State *L, int idx, double def)
+inline lua_Number luax_optnumberclamped01(lua_State *L, int idx, float def)
 {
-	return std::min(std::max(luaL_optnumber(L, idx, def), 0.0), 1.0);
+	return std::min(std::max(luaL_optnumber(L, idx, def), 0.f), 1.f);
 }
 
 /**

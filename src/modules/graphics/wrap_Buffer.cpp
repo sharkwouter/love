@@ -148,7 +148,7 @@ static inline size_t readSNormData(lua_State *L, int components, const char *dat
 	constexpr auto maxval = std::numeric_limits<T>::max();
 
 	for (int i = 0; i < components; i++)
-		lua_pushnumber(L, std::max(-1.0, (lua_Number) componentdata[i] / (lua_Number)maxval));
+		lua_pushnumber(L, std::max(-1.f, (lua_Number) componentdata[i] / (lua_Number)maxval));
 
 	return sizeof(T) * components;
 }

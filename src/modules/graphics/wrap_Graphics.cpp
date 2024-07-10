@@ -1295,22 +1295,22 @@ int w_newTextureView(lua_State *L)
 
 	lua_getfield(L, 2, "mipmapstart");
 	if (!lua_isnoneornil(L, -1))
-		settings.mipmapStart.set(luaL_checkint(L, -1) - 1);
+		settings.mipmapStart.set(luaL_checkinteger(L, -1) - 1);
 	lua_pop(L, 1);
 
 	lua_getfield(L, 2, "mipmapcount");
 	if (!lua_isnoneornil(L, -1))
-		settings.mipmapCount.set(luaL_checkint(L, -1));
+		settings.mipmapCount.set(luaL_checkinteger(L, -1));
 	lua_pop(L, 1);
 
 	lua_getfield(L, 2, "layerstart");
 	if (!lua_isnoneornil(L, -1))
-		settings.layerStart.set(luaL_checkint(L, -1) - 1);
+		settings.layerStart.set(luaL_checkinteger(L, -1) - 1);
 	lua_pop(L, 1);
 
 	lua_getfield(L, 2, "layers");
 	if (!lua_isnoneornil(L, -1))
-		settings.layerCount.set(luaL_checkint(L, -1));
+		settings.layerCount.set(luaL_checkinteger(L, -1));
 	lua_pop(L, 1);
 
 	lua_getfield(L, 2, "debugname");

@@ -195,11 +195,12 @@ FormatHandler::DecodedImage EXRHandler::decode(Data *data)
 		img.format = PIXELFORMAT_RGBA32_UINT;
 
 		uint32 *rgba[4] = {nullptr};
+		uint32 one = 1;
 		getEXRChannels(exrHeader, exrImage, rgba);
 
 		try
 		{
-			img.data = (unsigned char *) readEXRChannels(img.width, img.height, rgba, 1u);
+			img.data = (unsigned char *) readEXRChannels(img.width, img.height, rgba, one);
 		}
 		catch (love::Exception &)
 		{

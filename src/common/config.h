@@ -51,6 +51,12 @@
 #	define LOVE_LINUX 1
 #endif
 
+#if defined(__PSP__)
+// I know it's not linux, but it seems most "linux-only" code is psp-compatible
+#	define LOVE_LINUX 1
+#   define LUA_32BITS 1
+#endif
+
 // Endianness.
 #if defined(__ppc__) || defined(__ppc) || defined(__powerpc__) || defined(__powerpc)
 #	define LOVE_BIG_ENDIAN 1
