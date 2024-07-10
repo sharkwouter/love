@@ -82,6 +82,12 @@ See `readme-iOS.rtf` for more information.
 ### Android
 Visit the [Android build repository][android-repository] for build instructions.
 
+### Playstation Portable
+Because in-tree builds are not allowed, the Makefiles needs to be generated in a separate build directory. In addition the PSP does not have luajit and cmake cannot find harfbuzz. In this example, folder named `build` is used:
+
+    $ psp-cmake -D build -S.  -DLOVE_JIT=0 -DHARFBUZZ_INCLUDE_DIR=$PSPDEV/psp/include/harfbuzz # this will create the directory `build/`.
+	$ psp-cmake --build build -j$(nproc) # this will build with all cores.
+
 Dependencies
 ------------
 
