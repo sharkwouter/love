@@ -53,7 +53,7 @@ else()
 	set(LOVE_TARGET_PLATFORM x86)
 endif()
 
-if(APPLE)
+if(APPLE OR PSP)
 	option(LOVE_JIT "Use LuaJIT" FALSE)
 else()
 	option(LOVE_JIT "Use LuaJIT" TRUE)
