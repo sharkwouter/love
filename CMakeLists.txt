@@ -194,43 +194,69 @@ Please see https://github.com/love2d/megasource
 ")
 	endif()
 
-	find_package(Freetype REQUIRED)
-	find_package(ModPlug REQUIRED)
-	find_package(OpenAL REQUIRED)
-	find_package(OpenGL REQUIRED)
-	find_package(SDL2 REQUIRED CONFIG COMPONENTS SDL2main)
-	find_package(Theora REQUIRED)
-	find_package(Vorbis REQUIRED)
-	find_package(ZLIB REQUIRED)
-	find_package(Ogg REQUIRED)
+	if(PSP)
+		include(FindPkgConfig)
+		pkg_search_module(SDL2 REQUIRED sdl2)
 
-	# required for enet
-	add_definitions(-D HAS_SOCKLEN_T)
+		set(LOVE_INCLUDE_DIRS
+			${SDL2_INCLUDE_DIRS}
+			${PSPDEV}/psp/include/freetype2
+		)
 
-	set(LOVE_INCLUDE_DIRS
-		${SDL2_INCLUDE_DIRS}
-		${FREETYPE_INCLUDE_DIRS}
-		${VORBIS_INCLUDE_DIR}
-		${OPENAL_INCLUDE_DIR}
-		${ZLIB_INCLUDE_DIRS}
-		${MODPLUG_INCLUDE_DIR}
-		${OGG_INCLUDE_DIR}
-		${THEORA_INCLUDE_DIR}
-	)
+		set(LOVE_LINK_LIBRARIES
+			${SDL2_STATIC_LIBRARIES}
+			${LOVE_LUA_LIBRARY}
+			vorbis
+			vorbisfile
+			ogg
+			physfs
+			theora
+			modplug
+			freetype
+			png
+			openal
+			bz2
+			z
+		)
+	else()
+		find_package(Freetype REQUIRED)
+		find_package(ModPlug REQUIRED)
+		find_package(OpenAL REQUIRED)
+		find_package(OpenGL REQUIRED)
+		find_package(SDL2 REQUIRED CONFIG COMPONENTS SDL2main)
+		find_package(Theora REQUIRED)
+		find_package(Vorbis REQUIRED)
+		find_package(ZLIB REQUIRED)
+		find_package(Ogg REQUIRED)
 
-	set(LOVE_LINK_LIBRARIES
-		${OPENGL_gl_LIBRARY}
-		${SDL2_LIBRARIES}
-		${FREETYPE_LIBRARY}
-		${OPENAL_LIBRARY}
-		${MODPLUG_LIBRARY}
-		${THEORA_LIBRARY}
-		${THEORADEC_LIBRARY}
-		${VORBISFILE_LIBRARY}
-		${LOVE_LUA_LIBRARY}
-		${OGG_LIBRARY}
-		${ZLIB_LIBRARY}
-	)
+		# required for enet
+		add_definitions(-D HAS_SOCKLEN_T)
+
+		set(LOVE_INCLUDE_DIRS
+			${SDL2_INCLUDE_DIRS}
+			${FREETYPE_INCLUDE_DIRS}
+			${VORBIS_INCLUDE_DIR}
+			${OPENAL_INCLUDE_DIR}
+			${ZLIB_INCLUDE_DIRS}
+			${MODPLUG_INCLUDE_DIR}
+			${OGG_INCLUDE_DIR}
+			${THEORA_INCLUDE_DIR}
+		)
+
+		set(LOVE_LINK_LIBRARIES
+			${OPENGL_gl_LIBRARY}
+			${SDL2_LIBRARIES}
+			${FREETYPE_LIBRARY}
+			${OPENAL_LIBRARY}
+			${MODPLUG_LIBRARY}
+			${THEORA_LIBRARY}
+			${THEORADEC_LIBRARY}
+			${VORBISFILE_LIBRARY}
+			${LOVE_LUA_LIBRARY}
+			${OGG_LIBRARY}
+			${ZLIB_LIBRARY}
+		)	
+	endif()
 
 	if(LOVE_MPG123)
 		find_package(MPG123 REQUIRED)
@@ -482,14 +508,14 @@ set(LOVE_SRC_MODULE_FILESYSTEM_ROOT
 	src/modules/filesystem/wrap_Filesystem.h
 )
 
-set(LOVE_SRC_MODULE_FILESYSTEM_PHYSFS
-	src/modules/filesystem/physfs/File.cpp
-	src/modules/filesystem/physfs/File.h
-	src/modules/filesystem/physfs/Filesystem.cpp
-	src/modules/filesystem/physfs/Filesystem.h
-	src/modules/filesystem/physfs/PhysfsIo.h
-	src/modules/filesystem/physfs/PhysfsIo.cpp
-)
+	set(LOVE_SRC_MODULE_FILESYSTEM_PHYSFS
+		src/modules/filesystem/physfs/File.cpp
+		src/modules/filesystem/physfs/File.h
+		src/modules/filesystem/physfs/Filesystem.cpp
+		src/modules/filesystem/physfs/Filesystem.h
+		src/modules/filesystem/physfs/PhysfsIo.h
+		src/modules/filesystem/physfs/PhysfsIo.cpp
+	)
 
 set(LOVE_SRC_MODULE_FILESYSTEM
 	${LOVE_SRC_MODULE_FILESYSTEM_ROOT}
@@ -1289,45 +1315,47 @@ set(LOVE_SRC_3P_DRFLAC
 # enet
 #
 
-set(LOVE_SRC_3P_ENET_ROOT
-	src/libraries/enet/enet.cpp
-	src/libraries/enet/lua-enet.h
-)
+if(NOT PSP)
+	set(LOVE_SRC_3P_ENET_ROOT
+		src/libraries/enet/enet.cpp
+		src/libraries/enet/lua-enet.h
+	)
 
-set(LOVE_SRC_3P_ENET_LIBENET
-	src/libraries/enet/libenet/callbacks.c
-	src/libraries/enet/libenet/compress.c
-	src/libraries/enet/libenet/host.c
-	src/libraries/enet/libenet/list.c
-	src/libraries/enet/libenet/packet.c
-	src/libraries/enet/libenet/peer.c
-	src/libraries/enet/libenet/protocol.c
-	src/libraries/enet/libenet/unix.c
-	src/libraries/enet/libenet/win32.c
-)
+	set(LOVE_SRC_3P_ENET_LIBENET
+		src/libraries/enet/libenet/callbacks.c
+		src/libraries/enet/libenet/compress.c
+		src/libraries/enet/libenet/host.c
+		src/libraries/enet/libenet/list.c
+		src/libraries/enet/libenet/packet.c
+		src/libraries/enet/libenet/peer.c
+		src/libraries/enet/libenet/protocol.c
+		src/libraries/enet/libenet/unix.c
+		src/libraries/enet/libenet/win32.c
+	)
 
-set(LOVE_SRC_3P_ENET_LIBENET_INCLUDE_ENET
-	src/libraries/enet/libenet/include/enet/enet.h
-	src/libraries/enet/libenet/include/enet/list.h
-	src/libraries/enet/libenet/include/enet/protocol.h
-	src/libraries/enet/libenet/include/enet/time.h
-	src/libraries/enet/libenet/include/enet/types.h
-	src/libraries/enet/libenet/include/enet/unix.h
-	src/libraries/enet/libenet/include/enet/utility.h
-	src/libraries/enet/libenet/include/enet/win32.h
-)
+	set(LOVE_SRC_3P_ENET_LIBENET_INCLUDE_ENET
+		src/libraries/enet/libenet/include/enet/enet.h
+		src/libraries/enet/libenet/include/enet/list.h
+		src/libraries/enet/libenet/include/enet/protocol.h
+		src/libraries/enet/libenet/include/enet/time.h
+		src/libraries/enet/libenet/include/enet/types.h
+		src/libraries/enet/libenet/include/enet/unix.h
+		src/libraries/enet/libenet/include/enet/utility.h
+		src/libraries/enet/libenet/include/enet/win32.h
+	)
 
-set(LOVE_SRC_3P_ENET
-	${LOVE_SRC_3P_ENET_ROOT}
-	${LOVE_SRC_3P_ENET_LIBENET}
-	${LOVE_SRC_3P_ENET_LIBENET_INCLUDE_ENET}
-)
+	set(LOVE_SRC_3P_ENET
+		${LOVE_SRC_3P_ENET_ROOT}
+		${LOVE_SRC_3P_ENET_LIBENET}
+		${LOVE_SRC_3P_ENET_LIBENET_INCLUDE_ENET}
+	)
 
-add_library(love_3p_enet ${LOVE_SRC_3P_ENET})
-target_link_libraries(love_3p_enet ${LOVE_LUA_LIBRARY})
-target_include_directories(love_3p_enet PUBLIC src/libraries/enet/libenet/include)
-if(MINGW)
-	target_link_libraries(love_3p_enet winmm.a)
+	add_library(love_3p_enet ${LOVE_SRC_3P_ENET})
+	target_link_libraries(love_3p_enet ${LOVE_LUA_LIBRARY})
+	target_include_directories(love_3p_enet PUBLIC src/libraries/enet/libenet/include)
+	if(MINGW)
+		target_link_libraries(love_3p_enet winmm.a)
+	endif()
 endif()
 
 #
@@ -1476,93 +1504,95 @@ add_library(love_3p_lodepng ${LOVE_SRC_3P_LODEPNG})
 # luasocket
 #
 
-set(LOVE_SRC_3P_LUASOCKET_ROOT
-	src/libraries/luasocket/luasocket.cpp
-	src/libraries/luasocket/luasocket.h
-)
+if(NOT PSP)
+	set(LOVE_SRC_3P_LUASOCKET_ROOT
+		src/libraries/luasocket/luasocket.cpp
+		src/libraries/luasocket/luasocket.h
+	)
 
-set(LOVE_SRC_3P_LUASOCKET_LIBLUASOCKET
-	src/libraries/luasocket/libluasocket/auxiliar.c
-	src/libraries/luasocket/libluasocket/auxiliar.h
-	src/libraries/luasocket/libluasocket/buffer.c
-	src/libraries/luasocket/libluasocket/buffer.h
-	src/libraries/luasocket/libluasocket/compat.c
-	src/libraries/luasocket/libluasocket/compat.h
-	src/libraries/luasocket/libluasocket/except.c
-	src/libraries/luasocket/libluasocket/except.h
-	src/libraries/luasocket/libluasocket/ftp.lua.h
-	src/libraries/luasocket/libluasocket/headers.lua.h
-	src/libraries/luasocket/libluasocket/http.lua.h
-	src/libraries/luasocket/libluasocket/inet.c
-	src/libraries/luasocket/libluasocket/inet.h
-	src/libraries/luasocket/libluasocket/io.c
-	src/libraries/luasocket/libluasocket/io.h
-	src/libraries/luasocket/libluasocket/ltn12.lua.h
-	src/libraries/luasocket/libluasocket/luasocket.c
-	src/libraries/luasocket/libluasocket/luasocket.h
-	src/libraries/luasocket/libluasocket/mbox.lua.h
-	src/libraries/luasocket/libluasocket/mime.c
-	src/libraries/luasocket/libluasocket/mime.h
-	src/libraries/luasocket/libluasocket/mime.lua.h
-	src/libraries/luasocket/libluasocket/options.c
-	src/libraries/luasocket/libluasocket/options.h
-	src/libraries/luasocket/libluasocket/pierror.h
-	src/libraries/luasocket/libluasocket/select.c
-	src/libraries/luasocket/libluasocket/select.h
-	src/libraries/luasocket/libluasocket/smtp.lua.h
-	src/libraries/luasocket/libluasocket/socket.h
-	src/libraries/luasocket/libluasocket/socket.lua.h
-	src/libraries/luasocket/libluasocket/tcp.c
-	src/libraries/luasocket/libluasocket/tcp.h
-	src/libraries/luasocket/libluasocket/timeout.c
-	src/libraries/luasocket/libluasocket/timeout.h
-	src/libraries/luasocket/libluasocket/tp.lua.h
-	src/libraries/luasocket/libluasocket/udp.c
-	src/libraries/luasocket/libluasocket/udp.h
-	src/libraries/luasocket/libluasocket/url.lua.h
-)
-
-set(LOVE_LINK_L3P_LUASOCKET_LIBLUASOCKET)
-
-if(MINGW)
-	set(WIN32_LIB_EXT .a)
-else()
-	set(WIN32_LIB_EXT .lib)
-endif()
-
-if(MSVC OR MINGW)
 	set(LOVE_SRC_3P_LUASOCKET_LIBLUASOCKET
-		${LOVE_SRC_3P_LUASOCKET_LIBLUASOCKET}
-		src/libraries/luasocket/libluasocket/wsocket.c
-		src/libraries/luasocket/libluasocket/wsocket.h
+		src/libraries/luasocket/libluasocket/auxiliar.c
+		src/libraries/luasocket/libluasocket/auxiliar.h
+		src/libraries/luasocket/libluasocket/buffer.c
+		src/libraries/luasocket/libluasocket/buffer.h
+		src/libraries/luasocket/libluasocket/compat.c
+		src/libraries/luasocket/libluasocket/compat.h
+		src/libraries/luasocket/libluasocket/except.c
+		src/libraries/luasocket/libluasocket/except.h
+		src/libraries/luasocket/libluasocket/ftp.lua.h
+		src/libraries/luasocket/libluasocket/headers.lua.h
+		src/libraries/luasocket/libluasocket/http.lua.h
+		src/libraries/luasocket/libluasocket/inet.c
+		src/libraries/luasocket/libluasocket/inet.h
+		src/libraries/luasocket/libluasocket/io.c
+		src/libraries/luasocket/libluasocket/io.h
+		src/libraries/luasocket/libluasocket/ltn12.lua.h
+		src/libraries/luasocket/libluasocket/luasocket.c
+		src/libraries/luasocket/libluasocket/luasocket.h
+		src/libraries/luasocket/libluasocket/mbox.lua.h
+		src/libraries/luasocket/libluasocket/mime.c
+		src/libraries/luasocket/libluasocket/mime.h
+		src/libraries/luasocket/libluasocket/mime.lua.h
+		src/libraries/luasocket/libluasocket/options.c
+		src/libraries/luasocket/libluasocket/options.h
+		src/libraries/luasocket/libluasocket/pierror.h
+		src/libraries/luasocket/libluasocket/select.c
+		src/libraries/luasocket/libluasocket/select.h
+		src/libraries/luasocket/libluasocket/smtp.lua.h
+		src/libraries/luasocket/libluasocket/socket.h
+		src/libraries/luasocket/libluasocket/socket.lua.h
+		src/libraries/luasocket/libluasocket/tcp.c
+		src/libraries/luasocket/libluasocket/tcp.h
+		src/libraries/luasocket/libluasocket/timeout.c
+		src/libraries/luasocket/libluasocket/timeout.h
+		src/libraries/luasocket/libluasocket/tp.lua.h
+		src/libraries/luasocket/libluasocket/udp.c
+		src/libraries/luasocket/libluasocket/udp.h
+		src/libraries/luasocket/libluasocket/url.lua.h
 	)
 
-	set(LOVE_LINK_L3P_LUASOCKET_LIBLUASOCKET
-		${LOVE_LINK_L3P_LUASOCKET_LIBLUASOCKET}
-		ws2_32${WIN32_LIB_EXT}
-	)
-else()
-	set(LOVE_SRC_3P_LUASOCKET_LIBLUASOCKET
+	set(LOVE_LINK_L3P_LUASOCKET_LIBLUASOCKET)
+
+	if(MINGW)
+		set(WIN32_LIB_EXT .a)
+	else()
+		set(WIN32_LIB_EXT .lib)
+	endif()
+
+	if(MSVC OR MINGW)
+		set(LOVE_SRC_3P_LUASOCKET_LIBLUASOCKET
+			${LOVE_SRC_3P_LUASOCKET_LIBLUASOCKET}
+			src/libraries/luasocket/libluasocket/wsocket.c
+			src/libraries/luasocket/libluasocket/wsocket.h
+		)
+
+		set(LOVE_LINK_L3P_LUASOCKET_LIBLUASOCKET
+			${LOVE_LINK_L3P_LUASOCKET_LIBLUASOCKET}
+			ws2_32${WIN32_LIB_EXT}
+		)
+	else()
+		set(LOVE_SRC_3P_LUASOCKET_LIBLUASOCKET
+			${LOVE_SRC_3P_LUASOCKET_LIBLUASOCKET}
+			src/libraries/luasocket/libluasocket/serial.c
+			src/libraries/luasocket/libluasocket/unix.c
+			src/libraries/luasocket/libluasocket/unix.h
+			src/libraries/luasocket/libluasocket/unixtcp.c
+			src/libraries/luasocket/libluasocket/unixtcp.h
+			src/libraries/luasocket/libluasocket/unixudp.c
+			src/libraries/luasocket/libluasocket/unixudp.h
+			src/libraries/luasocket/libluasocket/usocket.c
+			src/libraries/luasocket/libluasocket/usocket.h
+		)
+	endif()
+
+	set(LOVE_SRC_3P_LUASOCKET
+		${LOVE_SRC_3P_LUASOCKET_ROOT}
 		${LOVE_SRC_3P_LUASOCKET_LIBLUASOCKET}
-		src/libraries/luasocket/libluasocket/serial.c
-		src/libraries/luasocket/libluasocket/unix.c
-		src/libraries/luasocket/libluasocket/unix.h
-		src/libraries/luasocket/libluasocket/unixtcp.c
-		src/libraries/luasocket/libluasocket/unixtcp.h
-		src/libraries/luasocket/libluasocket/unixudp.c
-		src/libraries/luasocket/libluasocket/unixudp.h
-		src/libraries/luasocket/libluasocket/usocket.c
-		src/libraries/luasocket/libluasocket/usocket.h
 	)
+
+	add_library(love_3p_luasocket ${LOVE_SRC_3P_LUASOCKET})
+	target_link_libraries(love_3p_luasocket ${LOVE_LUA_LIBRARY} ${LOVE_LINK_L3P_LUASOCKET_LIBLUASOCKET})
 endif()
-
-set(LOVE_SRC_3P_LUASOCKET
-	${LOVE_SRC_3P_LUASOCKET_ROOT}
-	${LOVE_SRC_3P_LUASOCKET_LIBLUASOCKET}
-)
-
-add_library(love_3p_luasocket ${LOVE_SRC_3P_LUASOCKET})
-target_link_libraries(love_3p_luasocket ${LOVE_LUA_LIBRARY} ${LOVE_LINK_L3P_LUASOCKET_LIBLUASOCKET})
 
 #
 # APIs from Lua 5.3
@@ -1610,45 +1640,47 @@ add_library(love_3p_noise1234 ${LOVE_SRC_3P_NOISE1234})
 # physfs
 #
 
-set(LOVE_SRC_3P_PHYSFS
-	src/libraries/physfs/physfs_archiver_7z.c
-	src/libraries/physfs/physfs_archiver_dir.c
-	src/libraries/physfs/physfs_archiver_grp.c
-	src/libraries/physfs/physfs_archiver_hog.c
-	src/libraries/physfs/physfs_archiver_iso9660.c
-	src/libraries/physfs/physfs_archiver_mvl.c
-	src/libraries/physfs/physfs_archiver_qpak.c
-	src/libraries/physfs/physfs_archiver_slb.c
-	src/libraries/physfs/physfs_archiver_unpacked.c
-	src/libraries/physfs/physfs_archiver_vdf.c
-	src/libraries/physfs/physfs_archiver_wad.c
-	src/libraries/physfs/physfs_archiver_zip.c
-	src/libraries/physfs/physfs_byteorder.c
-	src/libraries/physfs/physfs_casefolding.h
-	src/libraries/physfs/physfs_internal.h
-	src/libraries/physfs/physfs_lzmasdk.h
-	src/libraries/physfs/physfs_miniz.h
-	src/libraries/physfs/physfs_platform_haiku.cpp
-	src/libraries/physfs/physfs_platform_os2.c
-	src/libraries/physfs/physfs_platform_posix.c
-	src/libraries/physfs/physfs_platform_qnx.c
-	src/libraries/physfs/physfs_platform_unix.c
-	src/libraries/physfs/physfs_platform_windows.c
-	src/libraries/physfs/physfs_platform_winrt.cpp
-	src/libraries/physfs/physfs_platforms.h
-	src/libraries/physfs/physfs_unicode.c
-	src/libraries/physfs/physfs.c
-	src/libraries/physfs/physfs.h
-)
-
-if(APPLE)
-	set(LOVE_SRC_3P_PHYSFS ${LOVE_SRC_3P_PHYSFS}
-		src/libraries/physfs/physfs_platform_apple.m
+if(NOT PSP)
+	set(LOVE_SRC_3P_PHYSFS
+		src/libraries/physfs/physfs_archiver_7z.c
+		src/libraries/physfs/physfs_archiver_dir.c
+		src/libraries/physfs/physfs_archiver_grp.c
+		src/libraries/physfs/physfs_archiver_hog.c
+		src/libraries/physfs/physfs_archiver_iso9660.c
+		src/libraries/physfs/physfs_archiver_mvl.c
+		src/libraries/physfs/physfs_archiver_qpak.c
+		src/libraries/physfs/physfs_archiver_slb.c
+		src/libraries/physfs/physfs_archiver_unpacked.c
+		src/libraries/physfs/physfs_archiver_vdf.c
+		src/libraries/physfs/physfs_archiver_wad.c
+		src/libraries/physfs/physfs_archiver_zip.c
+		src/libraries/physfs/physfs_byteorder.c
+		src/libraries/physfs/physfs_casefolding.h
+		src/libraries/physfs/physfs_internal.h
+		src/libraries/physfs/physfs_lzmasdk.h
+		src/libraries/physfs/physfs_miniz.h
+		src/libraries/physfs/physfs_platform_haiku.cpp
+		src/libraries/physfs/physfs_platform_os2.c
+		src/libraries/physfs/physfs_platform_posix.c
+		src/libraries/physfs/physfs_platform_qnx.c
+		src/libraries/physfs/physfs_platform_unix.c
+		src/libraries/physfs/physfs_platform_windows.c
+		src/libraries/physfs/physfs_platform_winrt.cpp
+		src/libraries/physfs/physfs_platforms.h
+		src/libraries/physfs/physfs_unicode.c
+		src/libraries/physfs/physfs.c
+		src/libraries/physfs/physfs.h
 	)
-	set(LOVE_LINK_LIBRARIES ${LOVE_LINK_LIBRARIES} "-framework IOKit")
-endif()
 
-add_library(love_3p_physfs ${LOVE_SRC_3P_PHYSFS})
+	if(APPLE)
+		set(LOVE_SRC_3P_PHYSFS ${LOVE_SRC_3P_PHYSFS}
+			src/libraries/physfs/physfs_platform_apple.m
+		)
+		set(LOVE_LINK_LIBRARIES ${LOVE_LINK_LIBRARIES} "-framework IOKit")
+	endif()
+
+	add_library(love_3p_physfs ${LOVE_SRC_3P_PHYSFS})
+endif()
 
 #
 # stb_image
@@ -1711,30 +1743,49 @@ add_library(love_3p_wuff ${LOVE_SRC_3P_WUFF})
 # xxHash
 #
 
-set(LOVE_SRC_3P_XXHASH
-	src/libraries/xxHash/xxhash.c
-	src/libraries/xxHash/xxhash.h
-)
+if(NOT PSP)
+	set(LOVE_SRC_3P_XXHASH
+		src/libraries/xxHash/xxhash.c
+		src/libraries/xxHash/xxhash.h
+	)
 
-add_library(love_3p_xxhash ${LOVE_SRC_3P_XXHASH})
+	add_library(love_3p_xxhash ${LOVE_SRC_3P_XXHASH})
+endif()
 
-set(LOVE_3P
-	love_3p_box2d
-	love_3p_ddsparse
-	love_3p_enet
-	love_3p_glad
-	love_3p_glslang
-	love_3p_lodepng
-	love_3p_luasocket
-	love_3p_lua53
-	love_3p_lz4
-	love_3p_noise1234
-	love_3p_physfs
-	love_3p_wuff
-	love_3p_xxhash
-)
+if (PSP)
+	set(LOVE_3P
+		love_3p_box2d
+		love_3p_ddsparse
+		love_3p_glad
+		love_3p_glslang
+		love_3p_lodepng
+		love_3p_lua53
+		love_3p_lz4
+		love_3p_noise1234
+		love_3p_wuff
+		physfs
+		xxhash
+	)
+	love_disable_warnings(love_3p_box2d love_3p_physfs)
 
-love_disable_warnings(love_3p_box2d love_3p_enet love_3p_luasocket love_3p_physfs)
+else()
+	set(LOVE_3P
+		love_3p_box2d
+		love_3p_ddsparse
+		love_3p_enet
+		love_3p_glad
+		love_3p_glslang
+		love_3p_lodepng
+		love_3p_luasocket
+		love_3p_lua53
+		love_3p_lz4
+		love_3p_noise1234
+		love_3p_physfs
+		love_3p_wuff
+		love_3p_xxhash
+	)
+	love_disable_warnings(love_3p_box2d love_3p_enet love_3p_luasocket love_3p_physfs)
+endif()
 
 #
 # liblove

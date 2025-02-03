@@ -312,7 +312,7 @@ StrongRef<CompressedMemory> KTXHandler::parseCompressed(Data *filedata, std::vec
 			headerArray[i] = swapuint32(headerArray[i]);
 	}
 
-	header.numberOfMipmapLevels = std::max(header.numberOfMipmapLevels, 1u);
+	header.numberOfMipmapLevels = std::max(header.numberOfMipmapLevels, (uint32_t) 1);
 
 	bool isSRGB = false;
 	PixelFormat cformat = convertFormat(header.glInternalFormat, isSRGB);
@@ -373,8 +373,8 @@ StrongRef<CompressedMemory> KTXHandler::parseCompressed(Data *filedata, std::vec
 
 		uint32 mipsizepadded = (mipsize + 3) & ~uint32(3);
 
-		int width = (int) std::max(header.pixelWidth >> i, 1u);
-		int height = (int) std::max(header.pixelHeight >> i, 1u);
+		int width = (int) std::max(header.pixelWidth >> i, (uint32_t) 1);
+		int height = (int) std::max(header.pixelHeight >> i, (uint32_t) 1);
 
 		memcpy(memory->data + dataoffset, filebytes + fileoffset, mipsize);
 

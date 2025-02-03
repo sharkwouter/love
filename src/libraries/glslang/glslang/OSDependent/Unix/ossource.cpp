@@ -73,7 +73,7 @@ static void DetachThreadLinux(void *)
 //
 void OS_CleanupThreadData(void)
 {
-#if defined(__ANDROID__) || defined(__Fuchsia__)
+#if defined(__ANDROID__) || defined(__Fuchsia__) || defined(__PSP__)
     DetachThreadLinux(NULL);
 #else
     int old_cancel_state, old_cancel_type;

@@ -39,6 +39,12 @@ bool alignedMalloc(void **mem, size_t size, size_t alignment)
 #ifdef LOVE_WINDOWS
 	*mem = _aligned_malloc(size, alignment);
 	return *mem != nullptr;
+#elif LOVE_PSP
+	*mem = malloc(size + alignment - 1);
+	if (*mem != nullptr) {
+		*mem = (void*) (((size_t) mem* + (alignment-1)) &~ (alignment-1));
+	}
+	return *mem != nullptr;
 #else
 	return posix_memalign(mem, alignment, size) == 0;
 #endif
@@ -65,6 +71,8 @@ size_t getPageSize()
 	}
 
 	return (size_t) size;
+#elif LOVE_PSP
+	return 0;
 #else
 	static const long size = sysconf(_SC_PAGESIZE);
 	return size > 0 ? (size_t) size : 4096;

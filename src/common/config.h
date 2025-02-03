@@ -165,13 +165,15 @@
 #	define LOVE_ENABLE_VIDEO
 #	define LOVE_ENABLE_WINDOW
 
-#	define LOVE_ENABLE_ENET
-#	define LOVE_ENABLE_LUASOCKET
+# ifndef LOVE_PSP
+#	 define LOVE_ENABLE_ENET
+#	 define LOVE_ENABLE_LUASOCKET
+# endif
 #	define LOVE_ENABLE_LUA53
 #endif
 
 // Check we have a sane configuration
-#if !defined(LOVE_WINDOWS) && !defined(LOVE_LINUX) && !defined(LOVE_IOS) && !defined(LOVE_MACOSX) && !defined(LOVE_ANDROID)
+#if !defined(LOVE_WINDOWS) && !defined(LOVE_LINUX) && !defined(LOVE_IOS) && !defined(LOVE_MACOSX) && !defined(LOVE_ANDROID) && !defined(LOVE_PSP)
 #	error Could not detect target platform
 #endif
 #if !defined(LOVE_LITTLE_ENDIAN) && !defined(LOVE_BIG_ENDIAN)

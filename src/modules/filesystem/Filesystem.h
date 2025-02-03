@@ -45,6 +45,8 @@
 #		define LOVE_APPDATA_FOLDER "LOVE"
 #	elif defined(LOVE_LINUX)
 #		define LOVE_APPDATA_FOLDER "love"
+# elif defined(LOVE_PSP)
+#		define LOVE_APPDATA_FOLDER "love"
 #	else
 #		define LOVE_APPDATA_PREFIX "."
 #		define LOVE_APPDATA_FOLDER "love"

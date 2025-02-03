@@ -221,7 +221,7 @@ inline lua_Number luax_checknumberclamped01(lua_State *L, int idx)
 
 inline lua_Number luax_optnumberclamped01(lua_State *L, int idx, double def)
 {
-	return std::min(std::max(luaL_optnumber(L, idx, def), 0.0), 1.0);
+	return std::min(std::max(luaL_optnumber(L, idx, (float) def), 0.0), 1.0);
 }
 
 /**
