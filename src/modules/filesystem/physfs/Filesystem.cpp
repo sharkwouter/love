@@ -536,6 +536,8 @@ std::string Filesystem::getUserDirectory()
 #ifdef LOVE_IOS
 	// PHYSFS_getUserDir doesn't give exactly the path we want on iOS.
 	static std::string userDir = normalize(love::ios::getHomeDirectory());
+#elif defined(LOVE_PSP)
+	static std::string userDir = normalize(getWorkingDirectory());
 #else
 	static std::string userDir = normalize(PHYSFS_getUserDir());
 #endif

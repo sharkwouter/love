@@ -33,7 +33,7 @@
 #elif defined(LOVE_WINDOWS)
 #include <windows.h>
 #include "common/utf8.h"
-#elif defined(LOVE_LINUX)
+#elif defined(LOVE_LINUX) || defined(LOVE_PSP)
 #include <unistd.h>
 #endif
 
@@ -115,6 +115,8 @@ std::string Filesystem::getExecutablePath() const
 
 	return std::string(buffer, len);
 
+#elif defined(LOVE_PSP)
+	return "";
 #else
 #error Missing implementation for Filesystem::getExecutablePath!
 #endif

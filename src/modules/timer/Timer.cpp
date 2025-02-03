@@ -30,7 +30,7 @@
 #elif defined(LOVE_MACOSX) || defined(LOVE_IOS)
 #include <mach/mach_time.h>
 #include <sys/time.h>
-#elif defined(LOVE_LINUX)
+#elif defined(LOVE_LINUX) || defined(LOVE_PSP)
 #include <unistd.h>
 #include <time.h>
 #include <sys/time.h>
@@ -101,7 +101,7 @@ double Timer::getAverageDelta() const
 	return averageDelta;
 }
 
-#if defined(LOVE_LINUX)
+#if defined(LOVE_LINUX) || defined(LOVE_PSP)
 
 static inline timespec getTimeOfDay()
 {

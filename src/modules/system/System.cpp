@@ -76,6 +76,8 @@ std::string System::getOS() const
 	return "Android";
 #elif defined(LOVE_LINUX)
 	return "Linux";
+#elif defined(LOVE_PSP)
+	return "PSP";
 #else
 	return "Unknown";
 #endif
