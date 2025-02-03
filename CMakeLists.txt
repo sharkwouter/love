@@ -31,8 +31,18 @@ set(LOVE_EXE_NAME love)
 set(LOVE_LIB_NAME liblove)
 
 set(CMAKE_MODULE_PATH "${love_SOURCE_DIR}/extra/cmake" ${CMAKE_MODULE_PATH})
-# Needed for shared libs on Linux. (-fPIC).
-set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
+
+if(PSP)
+	set(LOVE_BUILD_SHARED OFF)
+else()
+	set(LOVE_BUILD_SHARED ON)
+endif()
+option(BUILD_SHARED_LIBS "Build using shared libraries" LOVE_BUILD_SHARED)
+
+if(BUILD_SHARED_LIBS)
+	# Needed for shared libs on Linux. (-fPIC).
+	set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
+endif()
 
 set (CMAKE_CXX_STANDARD 11)
 
@@ -1785,7 +1795,11 @@ if(MSVC OR MINGW)
 	endif()
 endif()
 
-add_library(${LOVE_LIB_NAME} SHARED ${LOVE_LIB_SRC} ${LOVE_RC})
+if(BUILD_SHARED_LIBS)
+	add_library(${LOVE_LIB_NAME} SHARED ${LOVE_LIB_SRC} ${LOVE_RC})
+else()
+	add_library(${LOVE_LIB_NAME} STATIC ${LOVE_LIB_SRC} ${LOVE_RC})
+endif()
 set_target_properties(${LOVE_LIB_NAME} PROPERTIES C_VISIBILITY_PRESET hidden CXX_VISIBILITY_PRESET hidden VISIBILITY_INLINES_HIDDEN ON)
 target_link_libraries(${LOVE_LIB_NAME} ${LOVE_LINK_LIBRARIES} ${LOVE_3P})
 
