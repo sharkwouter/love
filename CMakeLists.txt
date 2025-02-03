@@ -1875,6 +1875,18 @@ if(MSVC OR MINGW)
 	target_link_libraries(${LOVE_CONSOLE_EXE_NAME} ${LOVE_LIB_NAME})
 endif()
 
+# Build EBOOT.PBP for PSP
+if(PSP)
+	create_pbp_file(
+		TARGET love
+		ICON_PATH NULL
+		BACKGROUND_PATH NULL
+		PREVIEW_PATH NULL
+		TITLE love
+		VERSION 01.00
+	)
+endif()
+
 function(post_step_move_dll ARG_POST_TARGET ARG_TARGET_OR_FILE)
 	if(TARGET ${ARG_TARGET_OR_FILE})
 		add_custom_command(TARGET ${ARG_POST_TARGET} POST_BUILD
